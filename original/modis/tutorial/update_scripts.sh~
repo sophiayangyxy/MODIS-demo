@@ -1,0 +1,11 @@
+#!/bin/bash                                                                                                                                                                                    
+
+for script in $(find * | grep .swift$)
+do
+   echo $script
+   sed -i 's/@strcat/strcat/' $script
+   sed -i 's/@filename/filename/' $script
+   sed -i 's/@toInt/toInt/' $script
+   sed -i 's/@arg/arg/' $script
+
+done
