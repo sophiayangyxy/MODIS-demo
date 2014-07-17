@@ -1,15 +1,17 @@
 type file;
 type imagefile;
 type landuse;
+type getland_script;
+type analyze_script;
 
-app (landuse output) getLandUse (imagefile input)
+app (landuse output) getLandUse (imagefile input, getland_script script)
 {
-  getlanduse filename(input) stdout=filename(output);
+  bash filename(script) filename(input) stdout=filename(output);
 }
 
-app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype, int maxnum)
+app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype, int maxnum, analyze_script script)
 {
-  analyzelanduse @output @tilelist usetype maxnum @input;
+  bash filename(script) @output @tilelist usetype maxnum @input;
 }
 
 # Constants and command line arguments
@@ -24,11 +26,14 @@ imagefile geos[] <ext; exec="../bin/modis.mapper", location=MODISdir, suffix=".r
 # Compute the land use summary of each MODIS tile
 landuse land[] <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("landuse3/\\1.landuse.byfreq")>;
 
+getland_script getland<"../bin/getlanduse.sh">;
+analyze_script analyze<"../bin/analyzelanduse.sh">;
+
 foreach g,i in geos {
-    land[i] = getLandUse(g);
+    land[i] = getLandUse(g, getland);
 }
 
 # Find the top N tiles (by total area of selected landuse types)
 file topSelected <"topselected.txt">;
 file selectedTiles <"selectedtiles.txt">;
-(topSelected, selectedTiles) = analyzeLandUse(land, landType, nSelect);
+(topSelected, selectedTiles) = analyzeLandUse(land, landType, nSelect, analyze);
