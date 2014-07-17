@@ -31,7 +31,7 @@ app (imagefile output) colorModis (imagefile input, color_script script)
 int nFiles       = toInt(arg("nfiles", "1000"));
 int nSelect      = toInt(arg("nselect", "10"));
 string landType  = arg("landtype", "urban");
-string MODISdir  = arg("modisdir", "data/europe");
+string MODISdir  = arg("modisdir", "../data");
 
 # Input Dataset
 imagefile geos[] <ext; exec="../bin/modis.mapper", location=MODISdir, suffix=".rgb", n=nFiles>;
