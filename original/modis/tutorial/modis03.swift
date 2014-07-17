@@ -18,7 +18,7 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
 int nFiles       = toInt(arg("nfiles", "1000"));
 int nSelect      = toInt(arg("nselect", "10"));
 string landType  = arg("landtype", "urban");
-string MODISdir  = arg("modisdir", "../data/modis/2002");
+string MODISdir  = arg("modisdir", "../data");
 
 # Input Dataset
 imagefile geos[] <ext; exec="../bin/modis.mapper", location=MODISdir, suffix=".rgb", n=nFiles>;
