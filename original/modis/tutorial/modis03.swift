@@ -4,9 +4,9 @@ type landuse;
 type getland_script;
 type analyze_script;
 
-app (landuse output) getLandUse (imagefile input, getland_script script)
+app (landuse output) getLandUse (imagefile input, getland_script script, file rgb_script)
 {
-  bash filename(script) filename(input) stdout=filename(output);
+  bash filename(script) filename(input) stdout=filename(output) stderr=filename(output);
 }
 
 app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype, int maxnum, analyze_script script)
@@ -28,9 +28,10 @@ landuse land[] <structured_regexp_mapper; source=geos, match="(h..v..)", transfo
 
 getland_script getland<"../bin/getlanduse.sh">;
 analyze_script analyze<"../bin/analyzelanduse.sh">;
+file rgb_his<"./rgb_histogram.pl">;
 
 foreach g,i in geos {
-    land[i] = getLandUse(g, getland);
+    land[i] = getLandUse(g, getland, rgb_his);
 }
 
 # Find the top N tiles (by total area of selected landuse types)
