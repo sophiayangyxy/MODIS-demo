@@ -18,6 +18,7 @@ cat $tilefile | while read f ; do
   mv $outmap.tmp $outmap.step
 done
 
+chmod a+x $BINDIR/rgb_to_png.py
 # Convert output to PNG
 $BINDIR/rgb_to_png.py $outmap.step $xres $yres $outmap
 rm $outmap.step
