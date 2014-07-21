@@ -1,8 +1,9 @@
 type imagefile;
 type landuse;
 type getscript;
+type file;
 
-app (landuse output) getLandUse (imagefile input, getscript script)
+app (landuse output) getLandUse (imagefile input, getscript script, file rgb_script)
 {
   bash filename(script) filename(input) stdout=filename(output);
 }
@@ -18,8 +19,9 @@ imagefile geos[] <ext; exec="../bin/modis.mapper", location=MODISdir, suffix=".r
 landuse land[] <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("landuse2/\\1.landuse.byfreq")>;
 
 getscript script<"../bin/getlanduse.sh">;
+file rgb_script<"./rgb_histogram.pl">;
 
 foreach g,i in geos {
-    land[i] = getLandUse(g, script);
+    land[i] = getLandUse(g, script, rgb_script);
 }
 
