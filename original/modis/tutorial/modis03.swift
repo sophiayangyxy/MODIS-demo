@@ -6,12 +6,12 @@ type analyze_script;
 
 app (landuse output) getLandUse (imagefile input, getland_script script, file rgb_script)
 {
-  bash filename(script) filename(input) stdout=filename(output) stderr=filename(output);
+  bash filename(script) filename(input) stdout=filename(output);
 }
 
-app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype, int maxnum, analyze_script script)
+app (file output, file tilelist, file error) analyzeLandUse (landuse input[], string usetype, int maxnum, analyze_script script)
 {
-  bash filename(script) @output @tilelist usetype maxnum @input;
+  bash filename(script) @output @tilelist usetype maxnum @input stderr=filename(error);
 }
 
 # Constants and command line arguments
@@ -34,7 +34,9 @@ foreach g,i in geos {
     land[i] = getLandUse(g, getland, rgb_his);
 }
 
+file error<"./errorinfo">;
+
 # Find the top N tiles (by total area of selected landuse types)
 file topSelected <"topselected.txt">;
 file selectedTiles <"selectedtiles.txt">;
-(topSelected, selectedTiles) = analyzeLandUse(land, landType, nSelect, analyze);
+(topSelected, selectedTiles, error) = analyzeLandUse(land, landType, nSelect, analyze);

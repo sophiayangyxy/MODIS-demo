@@ -36,6 +36,7 @@ result=$( grep " $usetype " $( eval echo $5 ) | sed s/':'/' '/g | sort -rnk2 | a
 echo "$result" > $topselected
    
 # Write selectedtiles.txt
+touch $selectedtiles
 for r in $( echo "$result" | awk '{print $1}' )
 do
    echo $( basename $r ).rgb |sed s/\.landuse\.byfreq//g >> $selectedtiles
