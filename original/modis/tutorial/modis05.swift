@@ -5,27 +5,27 @@ type getland_script;
 type analyze_script;
 type markmap_script;
 type color_script;
-
+      
 app (landuse output) getLandUse (imagefile input, getland_script script, file rgb_script)
-{
-  bash filename(script) filename(input) stdout=filename(output);
+{ 
+   bash filename(script) filename(input) stdout=filename(output);
 }
-
+    
 app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype, int maxnum, analyze_script script)
 {
-  bash filename(script) @output @tilelist usetype maxnum @input;
+    bash filename(script) @output @tilelist usetype maxnum @input;
 }
 
 app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world) 
 {
   bash filename(script) @tilelist @grid;
 }
-
-app (imagefile output) colorModis (imagefile input, color_script script, adjust_script adjust, down_script down)
-{
+                  
+app (imagefile output) colorModis (imagefile input, color_script script, file adjust_script, file down_script)
+{  
   bash filename(script) @input @output;
 }
-
+                  
 # Constants and command line arguments
 int nFiles       = toInt(arg("nfiles", "1000"));
 int nSelect      = toInt(arg("nselect", "10"));
@@ -49,9 +49,9 @@ file world<"../bin/world.rgb">;
 
 file adjust<"../bin/rgb_adjust_color.pl">;
 file downscale<"../bin/rgb_downscale.pl">;
-
-foreach g,i in geos {
-    land[i] = getLandUse(g, getland, rgb_script);
+                     
+foreach g,i in geos {   
+ land[i] = getLandUse(g, getland, rgb_script);
 }
 
 # Find the top N tiles (by total area of selected landuse types)
@@ -69,3 +69,6 @@ imagefile colorImage[] <structured_regexp_mapper; source=geos, match="(h..v..)",
 foreach g, i in geos {
   colorImage[i] = colorModis(g, colormodis, adjust, downscale);
 }
+ 
+
+

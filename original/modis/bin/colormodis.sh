@@ -34,5 +34,7 @@ cat > translate.txt <<EOF
 #101010 #949494
 EOF
 
+chmod a+x $BINDIR/rgb_adjust_color.pl
+chmod a+x $BINDIR/rgb_downscale.pl
 $BINDIR/rgb_adjust_color.pl $infile translate.txt $outfile.tmp
 $BINDIR/rgb_downscale.pl $outfile.tmp $xres $yres $scale $outfile
