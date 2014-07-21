@@ -6,8 +6,7 @@ type analyze_script;
 type markmap_script;
 type color_script;
 
-
-app (landuse output) getLandUse (imagefile input, getland_script script)
+app (landuse output) getLandUse (imagefile input, getland_script script, file rgb_script)
 {
   bash filename(script) filename(input) stdout=filename(output);
 }
@@ -17,12 +16,12 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
   bash filename(script) @output @tilelist usetype maxnum @input;
 }
 
-app (imagefile grid) markMap (file tilelist, markmap_script script) 
+app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world) 
 {
   bash filename(script) @tilelist @grid;
 }
 
-app (imagefile output) colorModis (imagefile input, color_script script)
+app (imagefile output) colorModis (imagefile input, color_script script, adjust_script adjust, down_script down)
 {
   bash filename(script) @input @output;
 }
@@ -37,15 +36,22 @@ string MODISdir  = arg("modisdir", "../data");
 imagefile geos[] <ext; exec="../bin/modis.mapper", location=MODISdir, suffix=".rgb", n=nFiles>;
 
 # Compute the land use summary of each MODIS tile
-landuse land[] <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("landuse/\\1.landuse5.byfreq")>;
+landuse land[]    <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("landuse5/\\1.landuse.byfreq")>;
 
 getland_script getland<"../bin/getlanduse.sh">;
 analyze_script analyze<"../bin/analyzelanduse.sh">;
 markmap_script markmap<"../bin/markmap.sh">;
 color_script colormodis<"../bin/colormodis.sh">;
 
+file rgb_script<"./rgb_histogram.pl">;
+file rgbtopng_script<"../bin/rgb_to_png.py">;
+file world<"../bin/world.rgb">;
+
+file adjust<"../bin/rgb_adjust_color.pl">;
+file downscale<"../bin/rgb_downscale.pl">;
+
 foreach g,i in geos {
-    land[i] = getLandUse(g, getland);
+    land[i] = getLandUse(g, getland, rgb_script);
 }
 
 # Find the top N tiles (by total area of selected landuse types)
@@ -55,11 +61,11 @@ file selectedTiles <"selectedtiles.txt">;
 
 # Mark the top N tiles on a sinusoidal gridded map
 imagefile gridmap <"gridmap.png">;
-gridmap = markMap(topSelected, markmap);
+gridmap = markMap(topSelected, markmap, rgbtopng_script, world);
 
 # Create multi-color images for all tiles
 imagefile colorImage[] <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("colorImages/\\1.color.rgb")>;
 
 foreach g, i in geos {
-  colorImage[i] = colorModis(g, colormodis);
+  colorImage[i] = colorModis(g, colormodis, adjust, downscale);
 }
