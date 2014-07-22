@@ -16,7 +16,7 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
     bash filename(script) @output @tilelist usetype maxnum @input;
 }
 
-app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world) 
+app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world, file draw_script) 
 {
   bash filename(script) @tilelist @grid;
 }
@@ -46,7 +46,7 @@ color_script colormodis<"../bin/colormodis.sh">;
 file rgb_script<"./rgb_histogram.pl">;
 file rgbtopng_script<"../bin/rgb_to_png.py">;
 file world<"../bin/world.rgb">;
-
+file draw_script<"../bin/rgb_draw_rectangle.pl">;
 file adjust<"../bin/rgb_adjust_color.pl">;
 file downscale<"../bin/rgb_downscale.pl">;
                      
@@ -61,7 +61,7 @@ file selectedTiles <"selectedtiles.txt">;
 
 # Mark the top N tiles on a sinusoidal gridded map
 imagefile gridmap <"gridmap.png">;
-gridmap = markMap(topSelected, markmap, rgbtopng_script, world);
+gridmap = markMap(topSelected, markmap, rgbtopng_script, world, draw_script);
 
 # Create multi-color images for all tiles
 imagefile colorImage[] <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("colorImages/\\1.color.rgb")>;
