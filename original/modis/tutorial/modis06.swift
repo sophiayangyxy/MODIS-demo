@@ -25,7 +25,7 @@ file adjust_script, file down_script)
   bash filename(color_script) @input @output;
 }
 
-app (imagefile mon) assemble (imagefile images[], file assemble_script, file montage_script)
+app (imagefile mon) assemble (imagefile images[], file assemble_script, file montage_script, file rgbtopng_script)
 {
    bash filename(assemble_script) filename(mon) filenames(images);
 }
@@ -79,5 +79,5 @@ foreach g, i in geos {
 
 # Assemble a montage of the top selected areas
 imagefile montage<"map.png">; # arg
-montage = assemble(colorImage, assemble_script, montage_script);
+montage = assemble(colorImage, assemble_script, montage_script, rgbtopng_script);
 
