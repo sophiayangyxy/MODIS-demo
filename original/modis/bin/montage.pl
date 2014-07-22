@@ -20,6 +20,11 @@ while(@ARGV) {
    foreach(1..$cols) {
       local *FILE;
       my $filename = shift;
+      if (!defined $filename){
+	 # print STDERR "At end of filenames available to process, breaking!";
+	  last;	    
+      }
+  #    print STDOUT "FILENAME : $filename\n";
       open(FILE, "$filename") || die "Unable to open $filename";
       binmode FILE;
       push(@filehandles, *FILE);
@@ -28,6 +33,9 @@ while(@ARGV) {
    foreach my $y (1..$yres) {      
       foreach my $colnum (1..$cols) {
          my $bytedata;
+         if (!$filehandles[$colnum-1]) {
+            next;
+         }
          my $result = read($filehandles[$colnum-1], $bytedata, (3*$xres));
          print OUTFILE $bytedata;
       }
