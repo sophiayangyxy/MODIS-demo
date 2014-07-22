@@ -14,7 +14,7 @@ string usetype, int maxnum, file analyze_script)
 }
 
 app (imagefile grid) markMap (file tilelist, file markmap_script, file
-rgbtopgn_script, file world) 
+rgbtopgn_script, file world, file draw_script) 
 {
   bash filename(markmap_script) @tilelist @grid;
 }
@@ -54,6 +54,7 @@ file adjust<"../bin/rgb_adjust_color.pl">;
 file downscale<"../bin/rgb_downscale.pl">;
 file assemble_script<"../bin/assemble.sh">;
 file montage_script<"../bin/montage.pl">;
+file draw_script<"../bin/rgb_draw_rectangle.pl">;
 
 foreach g,i in geos {
     land[i] = getLandUse(g, getland_script, rgb_script);
@@ -67,7 +68,7 @@ analyze_script);
 
 # Mark the top N tiles on a sinusoidal gridded map
 imagefile gridmap <"gridmap.png">;
-gridmap = markMap(topSelected, markmap_script, rgbtopng_script, world);
+gridmap = markMap(topSelected, markmap_script, rgbtopng_script, world, draw_script);
 
 # Create multi-color images for all tiles
 imagefile colorImage[] <structured_regexp_mapper; source=geos, match="(h..v..)", transform=strcat("colorImages/\\1.color.rgb")>;
