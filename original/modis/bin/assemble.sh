@@ -19,6 +19,7 @@ do
 done
 
 cd $tmpdir
+chmod a+x $bindir/montage.pl
 $bindir/montage.pl 5 5 200 200 v*
 $bindir/rgb_to_png.py map.rgb 1000 1000 ../map.png
 
