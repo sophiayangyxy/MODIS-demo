@@ -14,6 +14,8 @@ cat $tilefile | while read f ; do
   hv=$(echo $f | sed -e 's,^.*/,,' -e 's/\..*//')
   h=$(echo $hv | sed -e 's/h//' -e 's/v..//' -e 's/^0//')
   v=$(echo $hv | sed -e 's/h..//' -e 's/v//' -e 's/^0//')
+  
+  chmod a+x $BINDIR/rgb_draw_rectangle.pl
   $BINDIR/rgb_draw_rectangle.pl $outmap.step $xres $yres $(( $h * 20 )) $(( $v * 20 )) $(( $h * 20 + 20 )) $(( $v * 20 + 20)) $outmap.tmp
   mv $outmap.tmp $outmap.step
 done

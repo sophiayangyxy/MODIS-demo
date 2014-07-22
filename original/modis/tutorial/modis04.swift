@@ -15,7 +15,7 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
   bash filename(script) filename(output) filename(tilelist) usetype maxnum @input;
 }
 
-app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world) 
+app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world, file draw_script) 
 {
   bash filename(script) @tilelist @grid;
 }
@@ -38,6 +38,7 @@ markmap_script markmap<"../bin/markmap.sh">;
 file rgb_script<"./rgb_histogram.pl">;
 file rgbtopgn_script<"../bin/rgb_to_png.py">;
 file world<"../bin/world.rgb">;
+file draw_script<"../bin/rgb_draw_rectangle.pl">;
 
 foreach g,i in geos {
     land[i] = getLandUse(g, getland, rgb_script);
@@ -50,4 +51,4 @@ file selectedTiles <"selectedtiles.txt">;
 
 # Mark the top N tiles on a sinusoidal gridded map
 imagefile gridmap <"gridmap.png">;
-gridmap = markMap(topSelected, markmap, rgbtopgn_script, world);
+gridmap = markMap(topSelected, markmap, rgbtopgn_script, world, draw_script);
