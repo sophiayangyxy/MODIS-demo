@@ -17,10 +17,10 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
 }
 
 app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopng_script, file world, file draw_script) 
-{
+{     
   bash filename(script) @tilelist @grid;
-}
-                  
+}     
+                           
 app (imagefile output) colorModis (imagefile input, color_script script, file adjust_script, file down_script)
 {  
   bash filename(script) @input @output;
