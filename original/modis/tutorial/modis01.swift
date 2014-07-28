@@ -8,10 +8,10 @@ app (landuse output) getLandUse (imagefile input, get_script script, file rgb_sc
   bash filename(script) filename(input) stdout=filename(output);
 }
 
-// imagefile modisImage <"data/europe/h18v05.rgb">;
-imagefile modisImage<"../data/h00v08.rgb">;
-// landuse result <"landuse1/h18v05.landuse.byfreq">;
-landuse result <"landuse1/h00v08.landuse.byfreq">;
+imagefile modisImage <"../data/modis/2002/europe/h18v05.rgb">;
+# imagefile modisImage<"../data/h00v08.rgb">;
+landuse result <"landuse1/h18v05.landuse.byfreq">;
+# landuse result <"landuse1/h00v08.landuse.byfreq">;
 get_script script<"../bin/getlanduse.sh">;
 file rgb_script<"./rgb_histogram.pl">;
 

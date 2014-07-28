@@ -24,7 +24,7 @@ app (imagefile grid) markMap (file tilelist, markmap_script script, file rgbtopn
 int nFiles       = toInt(arg("nfiles", "1000"));
 int nSelect      = toInt(arg("nselect", "10"));
 string landType  = arg("landtype", "urban");
-string MODISdir  = arg("modisdir", "../data");
+string MODISdir  = arg("modisdir", "../data/modis/2002/europe");
 
 # Input Dataset
 imagefile geos[] <ext; exec="../bin/modis.mapper", location=MODISdir, suffix=".rgb", n=nFiles>;
