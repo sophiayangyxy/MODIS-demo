@@ -1,5 +1,0 @@
-Swift 0.95 RC6 swift-r7900 cog-r3908
-RunID: run002
-Could not start execution:
-	Cannot pass type 'perlscript' as a parameter to application 'perl' in application perl at line 7:
-	Cannot pass type 'perlscript' as a parameter to application 'perl'
