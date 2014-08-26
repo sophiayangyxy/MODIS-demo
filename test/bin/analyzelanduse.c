@@ -1,6 +1,7 @@
-#include "stdio.h"
-#include "stdlib.h"
-#include "strings.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
 typedef struct typeFreq {
 	char *filename;
@@ -12,6 +13,10 @@ int main(int argc, char *argv[])
 	
 	FILE *topselected = fopen(argv[1], "a");
 	FILE *selectedtiles = fopen(argv[2], "a");
+
+	// char buf[128];
+	// char *res = realpath
+	//getcwd(tile, sizeof(tile));
 	
 	// for (int i = 0; i < argc; i++) {
 	// 	fprintf(topselected, "%s\n", argv[i]);
@@ -110,10 +115,26 @@ int main(int argc, char *argv[])
 		}
 	}
 
+
 	for (int i = (atoi(argv[4]) - 1); i >= 0; i--) {
-		fprintf(topselected, "%s %lu\n", s[i].filename, s[i].freq);
+	fprintf(topselected, "%s %lu\n", s[i].filename, s[i].freq);
+	// if (tile == NULL) {
+	// 	fprintf(selectedtiles, "getcwd failed");
+	// }
+	char temp1[50], tiletemp[256];
+	memcpy(temp1, &s[i].filename[8], 6);
+	temp1[6] = '\0';
+	strcpy(tiletemp, "modis-2002/");
+	strcat(tiletemp, temp1);
+	strcat(tiletemp, ".modis");
+	// // strcpy(tiletemp, buf);
+	// // strcat(tiletemp, "/modis-2002/");
+	// strncpy(temp1, s[i].filename+8, 7);
+	// strcat(temp1, );
+	// strcat(temp1, ".modis");
+	// strcat(tiletemp, temp1);
+	fprintf(selectedtiles, "%s\n", tiletemp);
 	}
-	fprintf(selectedtiles, "la");
 
 	return 0;
 }
