@@ -2,6 +2,11 @@
 #include "stdlib.h"
 #include "strings.h"
 
+typedef struct typeFreq {
+	char *filename;
+	unsigned long freq;
+} typeFreq;
+
 int main(int argc, char *argv[])
 {
 	
@@ -71,21 +76,44 @@ int main(int argc, char *argv[])
 		i++;
 		fname[i] = malloc(sizeof(char) * 30);
 		fname[i] = strtok(NULL, " ");
-		fprintf(topselected, "%s\n", fname[i]);
-	}
-	int a = 0;
-	while (fname[a] != NULL) {
-		fprintf(selectedtiles, "%s\n", fname[a]);
-		a++;
 	}
 
-	// unsigned long freq;
-	// int index, hexIndex;
-	// for (int i = 5; i <= argc; i++) {
-	// 	FILE *fp = fopen(argc[i], "a");
-	// 	fscanf(fp, "%lu %d %02x", &freq, &index, &hexIndex);
-	// 	if (index == t)
-	// }
+	int j = 0, k = 0;
+	unsigned long freq;
+	int index, hexIndex;
+	typeFreq *s = malloc(sizeof(typeFreq) * 1000);
+	while (fname[j] != NULL) {
+		// s[j].freq = 0;
+		// s[j].filename = NULL;
+		FILE *fp = fopen(fname[j], "r");
+		while (fscanf(fp, "%lu %d %02x", &freq, &index, &hexIndex) != EOF) {
+			if (index == t) {
+				s[k].filename = fname[j];
+				s[k].freq = freq;
+				k++;
+			}
+		}
+
+		// fprintf(topselected, "%s %lu\n", s[j].filename, s[j].freq);
+		// fprintf(selectedtiles, "blah");
+		j++;
+	}
+
+	typeFreq *temp = malloc(sizeof(typeFreq));
+	for (int i = 0; i < atoi(argv[4]); i++) {
+		for (int j = i + 1; j < k; j++) {
+			if (s[j].freq > s[i].freq) {
+				*temp = s[i];
+				s[i] = s[j];
+				s[j] = *temp;
+			}
+		}
+	}
+
+	for (int i = (atoi(argv[4]) - 1); i >= 0; i--) {
+		fprintf(topselected, "%s %lu\n", s[i].filename, s[i].freq);
+	}
+	fprintf(selectedtiles, "la");
 
 	return 0;
 }
