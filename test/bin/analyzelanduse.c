@@ -14,15 +14,6 @@ int main(int argc, char *argv[])
 	FILE *topselected = fopen(argv[1], "a");
 	FILE *selectedtiles = fopen(argv[2], "a");
 
-	// char buf[128];
-	// char *res = realpath
-	//getcwd(tile, sizeof(tile));
-	
-	// for (int i = 0; i < argc; i++) {
-	// 	fprintf(topselected, "%s\n", argv[i]);
-	// 	fprintf(selectedtiles, "la");
-	// }
-
 	int t;
 
 	char *usetype = argv[3];
@@ -67,15 +58,8 @@ int main(int argc, char *argv[])
 	char **fname = malloc(1000 * sizeof(char *));
 	int i = 0;
 
-	// char *fname = strtok(argv[5], " ");
-	// printf("%s\n", fname);
-	// fprintf(topselected, "%s\n", fname);
-	// fprintf(selectedtiles, "blah");
-
 	fname[0] = malloc(sizeof(char) * 30);
 	fname[0] = strtok(argv[5], " ") ;
-	
-	// fprintf(topselected, "%s\n", fname[0]);
 
 	while (fname[i] != NULL) {
 		i++;
@@ -88,8 +72,6 @@ int main(int argc, char *argv[])
 	int index, hexIndex;
 	typeFreq *s = malloc(sizeof(typeFreq) * 1000);
 	while (fname[j] != NULL) {
-		// s[j].freq = 0;
-		// s[j].filename = NULL;
 		FILE *fp = fopen(fname[j], "r");
 		while (fscanf(fp, "%lu %d %02x", &freq, &index, &hexIndex) != EOF) {
 			if (index == t) {
@@ -98,9 +80,6 @@ int main(int argc, char *argv[])
 				k++;
 			}
 		}
-
-		// fprintf(topselected, "%s %lu\n", s[j].filename, s[j].freq);
-		// fprintf(selectedtiles, "blah");
 		j++;
 	}
 
@@ -115,53 +94,16 @@ int main(int argc, char *argv[])
 		}
 	}
 
-
 	for (int i = (atoi(argv[4]) - 1); i >= 0; i--) {
-	fprintf(topselected, "%s %lu\n", s[i].filename, s[i].freq);
-	// if (tile == NULL) {
-	// 	fprintf(selectedtiles, "getcwd failed");
-	// }
-	char temp1[50], tiletemp[256];
-	memcpy(temp1, &s[i].filename[8], 6);
-	temp1[6] = '\0';
-	strcpy(tiletemp, "modis-2002/");
-	strcat(tiletemp, temp1);
-	strcat(tiletemp, ".modis");
-	// // strcpy(tiletemp, buf);
-	// // strcat(tiletemp, "/modis-2002/");
-	// strncpy(temp1, s[i].filename+8, 7);
-	// strcat(temp1, );
-	// strcat(temp1, ".modis");
-	// strcat(tiletemp, temp1);
-	fprintf(selectedtiles, "%s\n", tiletemp);
+		fprintf(topselected, "%s %lu\n", s[i].filename, s[i].freq);
+		char temp1[50], tiletemp[256];
+		memcpy(temp1, &s[i].filename[8], 6);
+		temp1[6] = '\0';
+		strcpy(tiletemp, "modis-2002/");
+		strcat(tiletemp, temp1);
+		strcat(tiletemp, ".modis");
+		fprintf(selectedtiles, "%s\n", tiletemp);
 	}
 
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

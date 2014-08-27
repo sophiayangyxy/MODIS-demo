@@ -12,6 +12,11 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
   analyzelanduse filename(output) filename(tilelist) usetype maxnum filename(input);
 }
 
+app (imagefile grid) markMap (file tilelist) 
+{
+  markmap filename(tilelist) filename(grid);
+}
+
 int nFiles       = toInt(arg("nfiles", "1000"));
 int nSelect      = toInt(arg("nselect", "10"));
 string landType  = arg("landtype", "urban");
@@ -28,3 +33,26 @@ foreach g,i in geos {
 file topSelected <"topselected.txt">;
 file selectedTiles <"selectedtiles.txt">;
 (topSelected, selectedTiles) = analyzeLandUse(land, landType, nSelect);
+
+imagefile gridmap <"gridmap.png">;
+gridmap = markMap(topSelected);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
