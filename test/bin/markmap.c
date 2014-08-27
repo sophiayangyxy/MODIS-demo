@@ -1,3 +1,4 @@
+//#include "lodepng.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,39 +9,42 @@ void draw_rectangle(FILE *originFile, int xres, int yres, int xmin,  int ymin, i
 	int x = 0, y = 0;
 
 	while (fscanf(originFile, "%c%c%c", &red, &green, &blue) != EOF) {
-		// if (x == xmin || x == xmin + 1 || x == xmax || x == xmax - 1) {
-		// 	if (y <= ymax && y >= ymin) {
-		// 		red = 255;
-		// 		green = 0;
-		// 		blue = 0;
-		// 	}
-		// }
+		if (x == xmin || x == xmin + 1 || x == xmax || x == xmax - 1) {
+			if (y <= ymax && y >= ymin) {
+				red = 255;
+				green = 0;
+				blue = 0;
+			}
+		}
 
-		// if (y == ymin || y == ymin - 1 || y == ymax || y == ymax - 1) {
-		// 	if (x <= xmax && x >= xmin) {
-		// 		red = 0;
-		// 		green = 0;
-		// 		blue = 0;
-		// 	}
-		// }
+		if (y == ymin || y == ymin - 1 || y == ymax || y == ymax - 1) {
+			if (x <= xmax && x >= xmin) {
+				red = 255;
+				green = 0;
+				blue = 0;
+			}
+		}
 
 		fprintf(outputFile, "%c%c%c", red, green, blue);
 
-		// if (x == xres - 1) {
-		// 	x = 0;
-		// 	y++;
-		// } else {
-		// 	x++;
-		// }
+		if (x == xres - 1) {
+			x = 0;
+			y++;
+		} else {
+			x++;
+		}
 	}
 }
 
 int main(int argc, char *argv[])
 {
+	int xres, yres, i = 0;
 	FILE *topSelected = fopen(argv[1], "r");
 	char buf[256];
 	unsigned long freq;
-	system("cp bin/world.rgb outmap.step");
+	//system("cp bin/world.rgb outmap.step");
+	FILE *world;
+	FILE *outmap;
 	while (fscanf(topSelected, "%s %lu", buf, &freq) != EOF) {
 		char sh[5], sv[5], hv[20];
 		memcpy(sh, &buf[9], 2);
@@ -52,15 +56,32 @@ int main(int argc, char *argv[])
 		memcpy(hv, &buf[8], 6);
 		hv[6] = '\0';
 
-		int xres = 721;
-		int yres = 361;
-		FILE *world = fopen("outmap.step", "r");
+		xres = 721;
+		yres = 361;
+		if (i == 0) {
+			world = fopen("bin/world.rgb", "r");
+			i++;
+		} else {
+			world = fopen("outmap.step", "r");
+		}
 		FILE *outmap = fopen("outmap.tmp", "w");
 
 		draw_rectangle(world, xres, yres, h * 20, v * 20, h * 20 + 20, v * 20 + 20, outmap);
+		// if (fopen("outmap.step", "r")) {
+		// 	remove("outmap.step");
+		// }
 		remove("outmap.step");
 		rename("outmap.tmp", "outmap.step");
+		fclose(world);
 	}
+	//const unsigned char *filename = (const unsigned char *)"ha.png";
+	//const char *filename = "ha.png";
+	//unsigned char *image = malloc(730 * 380 * 10);
+	//FILE *fp = fopen("outmap.step", "r");
+	//fread(image, 1, 721 * 361, fp);
+	//const unsigned char image[20] = (const unsigned char *)"outmap.step";
+	//lodepng_encode32_file(filename, image, 721, 361);
+	system("../original/modis/bin/rgb_to_png.py outmap.step 721 361 gridmap.png");
 
 	return 0;
 }
