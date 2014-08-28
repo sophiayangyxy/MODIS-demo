@@ -12,7 +12,7 @@ app (file output, file tilelist) analyzeLandUse (landuse input[], string usetype
   analyzelanduse filename(output) filename(tilelist) usetype maxnum filename(input);
 }
 
-app (imagefile grid) markMap (file tilelist) 
+app (imagefile grid) markMap (file tilelist, file worldmap, file convert)
 {
   markmap filename(tilelist) filename(grid);
 }
@@ -35,8 +35,9 @@ file selectedTiles <"selectedtiles.txt">;
 (topSelected, selectedTiles) = analyzeLandUse(land, landType, nSelect);
 
 imagefile gridmap <"gridmap.png">;
-gridmap = markMap(topSelected);
-
+file world <"bin/world.rgb">;
+file convert<"bin/rgb_to_png.py">;
+gridmap = markMap(topSelected, world, convert);
 
 
 

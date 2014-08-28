@@ -8,8 +8,7 @@ void draw_rectangle(FILE *originFile, int xres, int yres, int xmin,  int ymin, i
 	int x = 0, y = 0;
 
 	int f;
-	while ((f = fscanf(originFile, "%c%c%c", &red, &green, &blue)) != EOF) {
-		//if (f != 3) {fprintf(stderr, "%d\n", f);}
+	while (fscanf(originFile, "%c%c%c", &red, &green, &blue) != EOF) {
 		if (x == xmin || x == xmin + 1 || x == xmax || x == xmax - 1) {
 			if (y <= ymax && y >= ymin) {
 				red = 255;
@@ -78,8 +77,6 @@ int main(int argc, char *argv[])
 	system("chmod 777 ./bin/rgb_to_png.py");
 	sprintf(cmd, "./bin/rgb_to_png.py outmap.step 721 361 %s", argv[2]);
 	system(cmd);
-
-	//rename("outmap.step", "gridmap.png");
 
 	return 0;
 }
