@@ -1,4 +1,3 @@
-//#include "lodepng.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +7,9 @@ void draw_rectangle(FILE *originFile, int xres, int yres, int xmin,  int ymin, i
 	unsigned char red, green, blue;
 	int x = 0, y = 0;
 
-	while (fscanf(originFile, "%c%c%c", &red, &green, &blue) != EOF) {
+	int f;
+	while ((f = fscanf(originFile, "%c%c%c", &red, &green, &blue)) != EOF) {
+		//if (f != 3) {fprintf(stderr, "%d\n", f);}
 		if (x == xmin || x == xmin + 1 || x == xmax || x == xmax - 1) {
 			if (y <= ymax && y >= ymin) {
 				red = 255;
@@ -33,7 +34,7 @@ void draw_rectangle(FILE *originFile, int xres, int yres, int xmin,  int ymin, i
 		} else {
 			x++;
 		}
-	}
+	} 
 }
 
 int main(int argc, char *argv[])
@@ -42,7 +43,7 @@ int main(int argc, char *argv[])
 	FILE *topSelected = fopen(argv[1], "r");
 	char buf[256];
 	unsigned long freq;
-	//system("cp bin/world.rgb outmap.step");
+	
 	FILE *world;
 	FILE *outmap;
 	while (fscanf(topSelected, "%s %lu", buf, &freq) != EOF) {
@@ -59,29 +60,26 @@ int main(int argc, char *argv[])
 		xres = 721;
 		yres = 361;
 		if (i == 0) {
-			world = fopen("bin/world.rgb", "r");
+			world = fopen("./bin/world.rgb", "r");
 			i++;
 		} else {
 			world = fopen("outmap.step", "r");
 		}
-		FILE *outmap = fopen("outmap.tmp", "w");
+		outmap = fopen("outmap.tmp", "w");
 
 		draw_rectangle(world, xres, yres, h * 20, v * 20, h * 20 + 20, v * 20 + 20, outmap);
-		// if (fopen("outmap.step", "r")) {
-		// 	remove("outmap.step");
-		// }
+
 		remove("outmap.step");
 		rename("outmap.tmp", "outmap.step");
 		fclose(world);
 	}
-	//const unsigned char *filename = (const unsigned char *)"ha.png";
-	//const char *filename = "ha.png";
-	//unsigned char *image = malloc(730 * 380 * 10);
-	//FILE *fp = fopen("outmap.step", "r");
-	//fread(image, 1, 721 * 361, fp);
-	//const unsigned char image[20] = (const unsigned char *)"outmap.step";
-	//lodepng_encode32_file(filename, image, 721, 361);
-	system("../original/modis/bin/rgb_to_png.py outmap.step 721 361 gridmap.png");
+
+	char cmd[128];
+	system("chmod 777 ./bin/rgb_to_png.py");
+	sprintf(cmd, "./bin/rgb_to_png.py outmap.step 721 361 %s", argv[2]);
+	system(cmd);
+
+	//rename("outmap.step", "gridmap.png");
 
 	return 0;
 }
