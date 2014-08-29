@@ -7,7 +7,6 @@ void draw_rectangle(FILE *originFile, int xres, int yres, int xmin,  int ymin, i
 	unsigned char red, green, blue;
 	int x = 0, y = 0;
 
-	int f;
 	while (fscanf(originFile, "%c%c%c", &red, &green, &blue) != EOF) {
 		if (x == xmin || x == xmin + 1 || x == xmax || x == xmax - 1) {
 			if (y <= ymax && y >= ymin) {

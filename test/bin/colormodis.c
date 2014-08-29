@@ -16,14 +16,15 @@ rgb *assignValue(char r, char g, char b)
 	return new;
 }
 
+// TODO: read the buffer into integer arrays and convert them to corresponding integer arrays: do a lookup
 int main(int argc, char *argv[])
 {
 	unsigned long size = 2400 * 2400;
-	// char *buffer = malloc(size * sizeof(char));
+	//char *buffer = malloc(size * sizeof(char));
 	FILE *inputFile = fopen(argv[1], "rb");
 	FILE *outFile = fopen(argv[2], "w");
-	// fread(buffer, size, 1, inputFile);
-	// fclose(inputFile);
+	//fread(buffer, size, 1, inputFile);
+	//fclose(inputFile);
 	unsigned char modis;
 	
 	rgb *rgbNew = malloc(sizeof(rgb));
