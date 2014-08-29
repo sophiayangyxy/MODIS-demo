@@ -18,12 +18,18 @@ rgb *assignValue(char r, char g, char b)
 
 int main(int argc, char *argv[])
 {
-	FILE *inputFile = fopen(argv[1], "r");
+	unsigned long size = 2400 * 2400;
+	// char *buffer = malloc(size * sizeof(char));
+	FILE *inputFile = fopen(argv[1], "rb");
 	FILE *outFile = fopen(argv[2], "w");
+	// fread(buffer, size, 1, inputFile);
+	// fclose(inputFile);
 	unsigned char modis;
+	
 	rgb *rgbNew = malloc(sizeof(rgb));
 
-	while (fscanf(inputFile, "%c", &modis) != EOF) {
+	for (int i = 0; i < size; i++) {
+		fscanf(inputFile, "%c", &modis);
 		switch (modis) {
 			case 0:
 			rgbNew = assignValue(0x2b, 0x30, 0x41);
@@ -78,7 +84,6 @@ int main(int argc, char *argv[])
 			break;
 			default:
 			rgbNew = NULL;
-			break;
 		}
 
 		if (rgbNew != NULL) {
@@ -87,22 +92,9 @@ int main(int argc, char *argv[])
 			fprintf(outFile, "%c%c%c", modis, modis, modis);
 		}
 	}
+	fclose(outFile);
+	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
