@@ -1,8 +1,9 @@
+all: getlanduse analyzelanduse markmap colormodis
 getlanduse: getlanduse.c
-	gcc -Wall getlanduse.c -o getlanduse
+	gcc -Wall -std=c99 getlanduse.c -o getlanduse
 analyzelanduse: analyzelanduse.c
-	gcc -Wall analyzelanduse.c -o analyzelanduse
+	gcc -Wall -std=c99 analyzelanduse.c -o analyzelanduse
 markmap: markmap.c
-	gcc -Wall markmap.c -o markmap
+	gcc -Wall -std=c99 markmap.c -o markmap
 colormodis: colormodis.c
-	gcc -Wall colormodis.c -o colormodis
+	gcc -Wall -std=c99 colormodis.c -o colormodis
